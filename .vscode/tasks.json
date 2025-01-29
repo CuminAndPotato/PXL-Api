@@ -1,0 +1,27 @@
+{
+  "version": "2.0.0",
+  "options": {
+    "cwd": "./build"
+  },
+  "windows": {
+    "options": {
+      "shell": {
+        "executable": "C:\\Program Files\\Git\\bin\\bash.exe",
+        "args": ["-c"]
+      }
+    }
+  },
+  "tasks": [
+    {
+      "label": "Build .NET PXL.sln",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "command": "dotnet",
+      "type": "process",
+      "args": ["build", "../dotnet/Pxl.sln"],
+      "problemMatcher": ["$msCompile"]
+    }
+  ]
+}

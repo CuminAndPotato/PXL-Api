@@ -1,0 +1,25 @@
+<Project>
+
+  <PropertyGroup>
+    <Version>0.0.1-preview.22</Version>
+
+    <Authors>Ronald Schlenker, Sefa Ilkimen</Authors>
+    <Copyright>Copyright 2024 Cumin And Potato GmbH</Copyright>
+    <PackageTags>pxl pxlclock</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/CuminAndPotato/PXL-Clock</RepositoryUrl>
+    <!-- <PackageLicenseUrl>https://github.com/CuminAndPotato/PXL-Clock/blob/main/LICENSE.md</PackageLicenseUrl> -->
+    <!-- <PackageLicenseExpression>Proprietary</PackageLicenseExpression> -->
+
+    <PackageReleaseNotes>
+
+      0.0.1
+      - Initial release
+
+    </PackageReleaseNotes>
+  </PropertyGroup>
+
+</Project>
