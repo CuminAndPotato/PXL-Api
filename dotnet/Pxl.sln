@@ -4,6 +4,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Pxl.Ui", "fsharp\Pxl.Ui\Pxl.Ui.fsproj", "{424FB6DE-7227-43CA-952C-9C5FD3B241FB}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pxl", "Pxl\Pxl.fsproj", "{E0919BAA-0A25-45D8-BF70-EB53F8521FA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,5 +16,9 @@ Global
 		{424FB6DE-7227-43CA-952C-9C5FD3B241FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{424FB6DE-7227-43CA-952C-9C5FD3B241FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{424FB6DE-7227-43CA-952C-9C5FD3B241FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0919BAA-0A25-45D8-BF70-EB53F8521FA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0919BAA-0A25-45D8-BF70-EB53F8521FA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0919BAA-0A25-45D8-BF70-EB53F8521FA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0919BAA-0A25-45D8-BF70-EB53F8521FA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

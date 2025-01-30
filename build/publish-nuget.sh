@@ -2,6 +2,7 @@ rm -rf ./.nupkg
 
 projects=(
   "./dotnet/fsharp/Pxl.Ui/Pxl.Ui.fsproj"
+  "./dotnet/Pxl/Pxl.fsproj"
 )
 
 for project in "${projects[@]}"; do
