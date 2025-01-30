@@ -1,29 +1,38 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    // Target and module settings
+    "target": "es2020",
     "module": "esnext",
-    "strict": true,
-    "esModuleInterop": true,
-    "outDir": "dist",
     "moduleResolution": "node",
+    "outDir": "dist",
+
+    // Declaration settings
+    "declaration": true,
+    "declarationMap": true,
+
+    // Strictness settings
+    "strict": true,
     "noImplicitReturns": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "alwaysStrict": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "strictBindCallApply": true,
     "strictPropertyInitialization": true,
+    "alwaysStrict": true,
+
+    // Interoperability settings
+    "esModuleInterop": true,
+
+    // Code quality settings
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": false,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true
   },
   "rules": {
-    "@typescript-eslint/no-floating-promises": "error"
-  },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+    // Add your rules here
+  }
 }
