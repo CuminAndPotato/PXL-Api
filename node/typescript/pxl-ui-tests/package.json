@@ -1,14 +1,9 @@
 {
-  "name": "pxl-ui",
+  "name": "pxl-ui-tests",
   "version": "0.0.1",
-  "author": {
-    "name": "Cumin & Potato GmbH"
-  },
   "main": "index.ts",
-  "type": "module",
   "scripts": {
-    "script": "tsc && node --loader ts-node/esm",
-    "build": "rimraf dist && tsc"
+    "start": "tsc && node --loader ts-node/esm ./src/01_statefulPXL.ts"
   },
   "dependencies": {
     "@microsoft/signalr": "^8.0.0",
