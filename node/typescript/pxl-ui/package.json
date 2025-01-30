@@ -4,10 +4,9 @@
   "author": {
     "name": "Cumin & Potato GmbH"
   },
-  "main": "index.ts",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "script": "tsc && node --loader ts-node/esm",
     "build": "rimraf dist && tsc"
   },
   "dependencies": {
@@ -22,7 +21,6 @@
     "@typescript-eslint/eslint-plugin": "^8.20.0",
     "@typescript-eslint/parser": "^8.20.0",
     "eslint": "^9.18.0",
-    "rimraf": "^5.0.7",
-    "ts-node": "^10.4.0"
+    "rimraf": "^5.0.7"
   }
 }

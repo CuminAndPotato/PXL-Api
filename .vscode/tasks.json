@@ -22,6 +22,15 @@
       "type": "process",
       "args": ["build", "../dotnet/Pxl.sln"],
       "problemMatcher": ["$msCompile"]
+    },
+    {
+      "label": "Start Simulator",
+      "type": "shell",
+      "command": "./start-simulator.sh",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
     }
   ]
 }
