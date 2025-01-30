@@ -10,8 +10,12 @@ for project in "${projects[@]}"; do
   npm run build
 
   npm pack
-  popd
 
+  echo "//registry.npmjs.org/:_authToken=$NPM_API_KEY" > .npmrc
+  npm publish
+  rm .npmrc
+
+  popd
 done
 
 # todo
