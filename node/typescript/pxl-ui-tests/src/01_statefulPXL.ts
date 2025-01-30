@@ -1,7 +1,7 @@
-import * as Draw from '../Ui/draw.js';
-import * as Eval from '../evaluation.js';
-import { useState, getCtx } from '../vide.js';
-import * as Proxy from '../canvasProxy.js';
+import * as Draw from 'pxl-ui/src/Ui/draw.js';
+import * as Eval from 'pxl-ui/src/evaluation.js';
+import { useState, getCtx } from 'pxl-ui/src/vide.js';
+import * as Proxy from 'pxl-ui/src/canvasProxy.js';
 
 const canvas = Proxy.create("localhost", 20);
 

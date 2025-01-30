@@ -1,11 +1,11 @@
-import * as Draw from '../Ui/draw.js';
-import * as Anim from '../Ui/anim.js';
-import * as Eval from '../evaluation.js';
-import { useState, getCtx } from '../vide.js';
-import * as Proxy from '../canvasProxy.js';
+import * as Draw from 'pxl-ui/src/Ui/draw.js';
+import * as Anim from 'pxl-ui/src/Ui/anim.js';
+import * as Eval from 'pxl-ui/src/evaluation.js';
+import { useState, getCtx } from 'pxl-ui/src/vide.js';
+import * as Proxy from 'pxl-ui/src/canvasProxy.js';
 
-// const host = "localhost";
-const host = "192.168.178.52";
+const host = "localhost";
+// const host = "192.168.178.52";
 
 // a component that grows a red rectangle over time,
 // using an animation controller to store the current size.
