@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="App.fs" />
     <Compile Include="Utils.fs" />
     <Compile Include="Color.fs" />
     <Compile Include="Canvas.fs" />
