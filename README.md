@@ -33,3 +33,7 @@ https://github.com/CuminAndPotato/PXL-Clock/blob/main/README.md
 ## Help Wanted 🙏
 
 We welcome all contributions — whether it’s new APIs or improvements to the existing ones. If you’re interested, feel free to jump in!
+
+## License
+
+see: [LICENSE.md](./LICENSE.md)
