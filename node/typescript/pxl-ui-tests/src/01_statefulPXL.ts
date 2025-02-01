@@ -8,10 +8,10 @@ const canvas = Proxy.create("localhost", 20);
 // a component that grows a red rectangle over time,
 // using a single state variable to store the current size.
 async function growingRect(x: number, y: number, maxDim: number, paint: Draw.Paint) {
-  const ctx = await getCtx();
+  const ctx = getCtx();
 
   const minDim = 0;
-  const currSize = await useState(minDim);
+  const currSize = useState(minDim);
   Draw.rect(ctx, x, y, currSize.value, currSize.value, paint);
 
   currSize.value = currSize.value <= maxDim ? currSize.value + 0.3 : minDim;
@@ -24,7 +24,7 @@ async function demo() {
 
   // you can retrieve an instance of the renderContext
   // to access additional data, low level drawing functions, etc.
-  const _ctx = await getCtx();
+  const _ctx = getCtx();
 }
 
 // a continuous animation

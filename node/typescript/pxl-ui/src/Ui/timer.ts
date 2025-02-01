@@ -73,7 +73,7 @@ export class StopWatchController {
 export function stopWatch(autoStart: boolean = true) {
   return vide(
     () => new StopWatchController(autoStart),
-    async (controller, ctx) => {
+    (controller, ctx) => {
       if (controller.isRunning) {
         controller.eval(ctx.now);
       }
@@ -84,8 +84,8 @@ export function stopWatch(autoStart: boolean = true) {
 
 export function interval(interval: number, f: (swc: StopWatchController, renderCtx: RenderCtx) => void, autoStart: boolean = true) {
   return async () => {
-    const controller = await stopWatch(autoStart);
-    const ctx = await getCtx();
+    const controller = stopWatch(autoStart);
+    const ctx = getCtx();
     if (controller.elapsed >= interval) {
       controller.rewind(0);
       f(controller, ctx);

@@ -16,7 +16,7 @@ export class AnimationController {
     private endValue: number,
     private repeat: Repeat,
     private clamping: Clamping,
-  ) {}
+  ) { }
 
   get value(): number {
     return this._value;
@@ -114,7 +114,7 @@ export class AnimationController {
   }
 }
 
-async function calculate(
+function calculate(
   f: (x: number) => number,
   duration: number,
   startValue: number,
@@ -129,7 +129,7 @@ async function calculate(
       let ac = new AnimationController(f, swc, duration, startValue, endValue, repeat, clamping);
       return { swc, ac };
     },
-    async (state, ctx) => {
+    (state, ctx) => {
       const { swc, ac } = state;
       if (swc === undefined) {
         throw new Error('swc is undefined');
