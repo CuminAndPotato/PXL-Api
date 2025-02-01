@@ -9,7 +9,7 @@ This software and its associated files (the “Software”) are provided solely 
 - You may create derivative works based on the Software only if such works remain used solely for the Authorized Use.
 
 **3. Contributions**
-By submitting any form of contribution (“Contribution”) to this repository (including but not limited to software code, documentation, or other materials), you grant the owners and maintainers of this repository (“us”) a perpetual, irrevocable, worldwide, non-exclusive, royalty-free license to use, reproduce, display, modify, adapt, publish, translate, distribute, sublicense, or otherwise exploit your Contribution in whole or in part, in any form or medium, for any purpose related to the PXL-Clock project.
+By submitting any form of contribution (“Contribution”) to this repository (including but not limited to software code, documentation, or other materials), you grant the owners and maintainers of this repository (“us”) a perpetual, irrevocable, worldwide, exclusive, royalty-free license to use, reproduce, display, modify, adapt, publish, translate, distribute, sublicense, or otherwise exploit your Contribution in whole or in part, in any form or medium, for any purpose.
 
 **4. No Warranty**
 THE SOFTWARE IS PROVIDED “AS IS,” WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
