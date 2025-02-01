@@ -45,9 +45,9 @@ function testbild() {
 
 // This is the clamping algorithm
 // using side effects to incoming pixels.
-  // ww have to transform that here a tiny bit later
-  // when we integrate it in the LedMatrix
-  function clamp(pixels: Color[]) {
+// ww have to transform that here a tiny bit later
+// when we integrate it in the LedMatrix
+function clamp(pixels: Color[]) {
   for (let i = 0; i < pixels.length; i++) {
     const color = pixels[i];
     pixels[i] = color.setBrightness(0.5);
