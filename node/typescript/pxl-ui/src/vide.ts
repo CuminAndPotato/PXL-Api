@@ -4,6 +4,9 @@
 
 export type SceneFunc<V> = () => V;
 
+let log = (message?: any, ...optionalParams: any[]) =>
+  console.debug(message, ...optionalParams);
+
 // We can't generalize _ctx because it's all singleton and single-thread hacks here,
 // so we would either specialize it to RenderCtx (which we may do later), or
 // leave it as any and lose type safety.
@@ -26,7 +29,7 @@ export function popState() {
 }
 
 export function pushState(state: any) {
-  console.debug('Pushing state ...', state);
+  log('Pushing state ...', state);
   ResumableStateHack.pushStack = ResumableStateHack.pushStack === undefined ? [state] : [...ResumableStateHack.pushStack, state];
 }
 
@@ -39,7 +42,7 @@ export class Evaluable<T> {
     private readonly onCycleStart?: () => void,
     private readonly onCycleEnd?: () => void,
   ) {
-    console.debug('Evaluable: constructor ...');
+    log('Evaluable: constructor ...');
   }
 
   async next() {

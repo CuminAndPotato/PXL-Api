@@ -4,7 +4,7 @@
   "main": "index.ts",
   "type": "module",
   "scripts": {
-    "start": "tsx ./src/01_statefulPXL.ts"
+    "start": "tsx ./src/03_sefa.ts"
   },
   "dependencies": {
     "@microsoft/signalr": "^8.0.0",

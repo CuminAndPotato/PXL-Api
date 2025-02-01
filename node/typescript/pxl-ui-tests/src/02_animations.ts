@@ -9,19 +9,19 @@ const host = "localhost";
 
 // a component that grows a red rectangle over time,
 // using an animation controller to store the current size.
-async function growingRect(x: number, y: number, maxDim: number, paint: Draw.Paint) {
+function growingRect(x: number, y: number, maxDim: number, paint: Draw.Paint) {
   const ctx = getCtx();
   const { value } = Anim.easeOut(1.5, 0, maxDim, 'Loop', true);
   Draw.rect(ctx, x, y, 10, value, paint);
 }
 
 // this is the final view, using 2 "instances" of the growingRect component.
-async function demo() {
-  const { w, h } = getCtx().size;
-  const [w2, h2] = [w / 2, h / 2];
+function demo() {
+  const ctx = getCtx();
+  const { w: w2, h: h2 } = getCtx().halfSize;
 
-  await growingRect(0, 0, h2, 'red');
-  await growingRect(w2, h2, h2, 'green');
+  growingRect(0, 0, h2, 'red');
+  growingRect(w2, h2, h2, 'green');
 }
 
 // a continuous animation
