@@ -13,17 +13,20 @@ import { Color } from './color.js';
 //   src/pxl-local-display/src/server.ts
 // --------------------------------------------------------------------------
 
-type Ports = {
-  tcp: number,
-  http: number
-};
+interface Ports {
+  tcp: number;
+  http: number;
+}
 
 const invariantServicePorts: Ports = {
   http: 5001,
-  tcp: 5002
+  tcp: 5002,
 };
 
-async function getClientMetadata(host: string, ports: Ports): Promise<CanvasMetadata> {
+async function getClientMetadata(
+  host: string,
+  ports: Ports,
+): Promise<CanvasMetadata> {
   const url = `http://${host}:${ports.http}/metadata`;
   const res = await fetch(url);
   if (!res.ok)
@@ -32,7 +35,7 @@ async function getClientMetadata(host: string, ports: Ports): Promise<CanvasMeta
   return {
     width: obj.width,
     height: obj.height,
-    fps: obj.fps
+    fps: obj.fps,
   };
 }
 
@@ -40,7 +43,7 @@ export async function create(
   host: string,
   sendBufferSize: number,
   ports = invariantServicePorts,
-): Promise<Canvas> {
+): Promise<{ canvas: Canvas; dispose: () => void }> {
   const clientMetadata = await getClientMetadata(host, ports);
   const client = net.connect(invariantServicePorts.tcp, host);
   const sendFrame = (pixels: readonly Color[]) => {
@@ -57,7 +60,7 @@ export async function create(
   const metadata = {
     width: clientMetadata.width,
     height: clientMetadata.height,
-    fps: clientMetadata.fps
+    fps: clientMetadata.fps,
   };
 
   const canvas = new Canvas(metadata, sendBufferSize);
@@ -68,7 +71,7 @@ export async function create(
     }
   };
 
-  const intervalId = setInterval(pollCanvas, 1000 / metadata.fps * 3);
+  const intervalId = setInterval(pollCanvas, (1000 / metadata.fps) * 3);
 
   const dispose = () => {
     clearInterval(intervalId);
@@ -76,5 +79,5 @@ export async function create(
     client.destroy();
   };
 
-  return canvas;
+  return { canvas, dispose };
 }

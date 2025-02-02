@@ -1,38 +1,9 @@
 {
+  "extends": "../../tsconfig.base.json",
+  "include": ["src/**/*.ts"],
   "compilerOptions": {
-    // Target and module settings
-    "target": "es2020",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "outDir": "dist",
-
-    // Declaration settings
     "declaration": true,
     "declarationMap": true,
-
-    // Strictness settings
-    "strict": true,
-    "noImplicitReturns": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": true,
-    "alwaysStrict": true,
-
-    // Interoperability settings
-    "esModuleInterop": true,
-
-    // Code quality settings
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": false,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true
-  },
-  "rules": {
-    // Add your rules here
+    "outDir": "dist"
   }
 }

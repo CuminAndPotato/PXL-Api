@@ -1,25 +1,26 @@
 import { Color } from './color.js';
 
-export type CanvasMetadata = {
-  width: number
-  height: number
-  fps: number
+export interface CanvasMetadata {
+  width: number;
+  height: number;
+  fps: number;
 }
 
 export class Canvas {
-  private buffer: Array<readonly Color[]> = [];
+  private buffer: (readonly Color[])[] = [];
 
   public isCancellationRequested = false;
 
   constructor(
     public readonly metadata: CanvasMetadata,
-    public readonly sendFrameBufferSize: number
-  ) {
-  }
+    public readonly sendFrameBufferSize: number,
+  ) {}
 
   pushFrame(frame: readonly Color[]) {
-    if (this.buffer.length >= this.sendFrameBufferSize)
+    if (this.buffer.length >= this.sendFrameBufferSize) {
       this.buffer.shift();
+    }
+
     this.buffer.push(frame);
   }
 
@@ -30,7 +31,9 @@ export class Canvas {
   }
 
   clearCanvas(canvas: Canvas, color: Color) {
-    const buffer = new Array(canvas.metadata.width * canvas.metadata.height).fill(color);
+    const buffer = new Array(
+      canvas.metadata.width * canvas.metadata.height,
+    ).fill(color);
     canvas.pushFrame(buffer);
   }
-};
+}

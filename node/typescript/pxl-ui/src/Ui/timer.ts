@@ -70,7 +70,7 @@ export class StopWatchController {
   }
 }
 
-export function stopWatch(autoStart: boolean = true) {
+export function stopWatch(autoStart = true) {
   return vide(
     () => new StopWatchController(autoStart),
     (controller, ctx) => {
@@ -82,7 +82,7 @@ export function stopWatch(autoStart: boolean = true) {
   );
 }
 
-export function interval(interval: number, f: (swc: StopWatchController, renderCtx: RenderCtx) => void, autoStart: boolean = true) {
+export function interval(interval: number, f: (swc: StopWatchController, renderCtx: RenderCtx) => void, autoStart = true) {
   return async () => {
     const controller = stopWatch(autoStart);
     const ctx = getCtx();

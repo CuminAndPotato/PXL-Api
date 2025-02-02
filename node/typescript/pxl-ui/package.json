@@ -8,7 +8,8 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "rimraf dist && tsc"
+    "build": "rimraf dist && tsc",
+    "lint": "eslint -c eslint.config.mjs"
   },
   "dependencies": {
     "@microsoft/signalr": "^8.0.0",
@@ -19,9 +20,6 @@
     "sharp": "^0.33.4"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^8.20.0",
-    "@typescript-eslint/parser": "^8.20.0",
-    "eslint": "^9.18.0",
     "rimraf": "^5.0.7"
   }
 }
