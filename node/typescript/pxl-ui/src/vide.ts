@@ -34,11 +34,11 @@ export function pushState(state: any) {
 }
 
 export class Evaluable<T> {
-  private _state: any = undefined;
+  private _state: readonly any[] | undefined = undefined;
 
   constructor(
     private readonly vide: SceneFunc<T>,
-    private readonly ctx: any,
+    private readonly ctx: RenderCtx,
     private readonly onCycleStart?: () => void,
     private readonly onCycleEnd?: () => void,
   ) {
@@ -63,7 +63,7 @@ export class Evaluable<T> {
     // we know that all vide functions are sync!
     prepareCycle();
     this.onCycleStart && this.onCycleStart();
-    const videRes = await this.vide();
+    const videRes = this.vide();
     this._state = teardownCycle();
     this.onCycleEnd && this.onCycleEnd();
     return videRes;
@@ -75,6 +75,7 @@ import { RenderCtx } from './renderCtx.js';
 export function vide<V, S>(func: (state: S | undefined, ctx: RenderCtx) => [V, S]): V;
 export function vide<V, S>(initial: () => S, func: (state: S, ctx: RenderCtx) => [V, S]): V;
 export function vide<V, S>(initial: S, func: (state: S, ctx: RenderCtx) => [V, S]): V;
+// @silkimen das kann prinzipiell weg (nur da für Overloading)
 export function vide<V, S>(arg1: any, arg2?: any): V {
   if (typeof arg1 === 'function' && arg2 === undefined) {
     const state = popState();
@@ -95,6 +96,7 @@ class Mutable<V> {
 
 export function useMemo<V>(initial: () => V): V;
 export function useMemo<V>(initial: V): V;
+// @silkimen das kann prinzipiell weg (nur da für Overloading)
 export function useMemo<V>(initial: any): V {
   return vide(
     () => (typeof initial === 'function' ? initial() : initial),
@@ -104,6 +106,7 @@ export function useMemo<V>(initial: any): V {
 
 export function useState<V>(initial: () => V): Mutable<V>;
 export function useState<V>(initial: V): Mutable<V>;
+// @silkimen das kann prinzipiell weg (nur da für Overloading)
 export function useState<V>(initial: any): Mutable<V> {
   return useMemo(() => new Mutable(typeof initial === 'function' ? initial() : initial));
 }
