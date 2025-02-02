@@ -74,7 +74,7 @@ export class Evaluable<T> {
       this.onCycleStart();
     }
 
-    const videRes = await this.vide();
+    const videRes = this.vide();
     this._state = teardownCycle();
 
     if (this.onCycleEnd) {
