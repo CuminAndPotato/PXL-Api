@@ -1,12 +1,12 @@
-import { StopWatchController } from './timer.js';
 import { vide } from '../vide.js';
+import { StopWatchController } from './timer.js';
 
 type Repeat = 'StopAtEnd' | 'Loop' | 'RewindAndStop';
 type Clamping = 'NoClamp' | 'ClampSmallerZero' | 'ClampBiggerOne' | 'ClampBoth';
 
 export class AnimationController {
-  private _value: number = 0.0;
-  private _isAtEnd: boolean = false;
+  private _value = 0.0;
+  private _isAtEnd = false;
 
   constructor(
     private f: (t: number) => number,
@@ -16,7 +16,7 @@ export class AnimationController {
     private endValue: number,
     private repeat: Repeat,
     private clamping: Clamping,
-  ) { }
+  ) {}
 
   get value(): number {
     return this._value;
@@ -88,7 +88,7 @@ export class AnimationController {
   }
 
   eval(): void {
-    let isAtEndLocal = this.elapsedRel >= 1.0;
+    const isAtEndLocal = this.elapsedRel >= 1.0;
     if (isAtEndLocal) {
       switch (this.repeat) {
         case 'StopAtEnd':
@@ -98,10 +98,11 @@ export class AnimationController {
           this.sw.rewind(0);
           this.sw.pause();
           break;
-        case 'Loop':
-          let overTheEndTime = this.sw.elapsed - this.duration;
+        case 'Loop': {
+          const overTheEndTime = this.sw.elapsed - this.duration;
           this.sw.rewind(overTheEndTime);
           break;
+        }
         default:
           throw new Error('Unknown repeat type.');
       }
@@ -125,8 +126,8 @@ function calculate(
 ) {
   return vide(
     () => {
-      let swc = new StopWatchController(autoStart !== undefined ? autoStart : true);
-      let ac = new AnimationController(f, swc, duration, startValue, endValue, repeat, clamping);
+      const swc = new StopWatchController(autoStart !== undefined ? autoStart : true);
+      const ac = new AnimationController(f, swc, duration, startValue, endValue, repeat, clamping);
       return { swc, ac };
     },
     (state, ctx) => {

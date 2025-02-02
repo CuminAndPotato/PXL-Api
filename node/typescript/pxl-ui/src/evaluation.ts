@@ -1,14 +1,16 @@
-import { Canvas } from "./canvas.js";
-import { Color } from "./color.js";
-import { RenderCtx } from "./renderCtx.js";
-import { ResumableStateHack, SceneFunc } from "./vide.js";
+import { Canvas } from './canvas.js';
+import { Color } from './color.js';
+import { RenderCtx } from './renderCtx.js';
+import { ResumableStateHack, SceneFunc } from './vide.js';
 
 // Reality class and module
 export class Reality {
   constructor(
-    public readonly onCycleFinished: (nextPlannedEvaluation: Date) => Promise<void>,
-    private readonly getNow: () => Date
-  ) { }
+    public readonly onCycleFinished: (
+      nextPlannedEvaluation: Date,
+    ) => Promise<void>,
+    private readonly getNow: () => Date,
+  ) {}
 
   get now(): Date {
     return this.getNow();
@@ -32,10 +34,12 @@ export class Reality {
 }
 
 // Evaluation module
-let startedTimes = 0;
+// let startedTimes = 0;
 const hangDetectionTimeSpan = 5000; // 5 seconds
 
-let stop: () => void = () => { }
+let stop: () => void = () => {
+  // TODO
+};
 
 // The 'start' function has been adapted to use setTimeout and async loops instead of threads.
 export function startEx<S>(
@@ -43,13 +47,11 @@ export function startEx<S>(
   onEvalError: (ex: Error) => void,
   reality: Reality,
   // readButtons: () => Buttons,
-  scene: SceneFunc<S>
-)
-  : { stop: () => void } {
-
+  scene: SceneFunc<S>,
+): { stop: () => void } {
   stop();
 
-  startedTimes++;
+  // startedTimes++;
   let shouldEvaluate = true;
   const isRunning = () => shouldEvaluate && !canvas.isCancellationRequested;
 
@@ -58,18 +60,23 @@ export function startEx<S>(
   // Prepare frames
   const frameArrays: Color[][] = [];
   for (let i = 0; i < canvas.sendFrameBufferSize; i++) {
-    frameArrays.push(new Array<Color>(canvas.metadata.width * canvas.metadata.height));
+    frameArrays.push(
+      new Array<Color>(canvas.metadata.width * canvas.metadata.height),
+    );
   }
 
-  const renderCtx = new RenderCtx(canvas.metadata.width, canvas.metadata.height);
+  const renderCtx = new RenderCtx(
+    canvas.metadata.width,
+    canvas.metadata.height,
+  );
   const durationForOneFrame = 1.0 / canvas.metadata.fps;
   const sceneStartTime = reality.now;
 
-  let lastSceneState: readonly any[] | undefined = undefined;
+  let lastSceneState: readonly unknown[] | undefined = undefined;
   let completeCycleCount = 0;
 
   const calcTimeForCycle = (cycleNr: number) =>
-    new Date(sceneStartTime.getTime() + (durationForOneFrame * cycleNr * 1000));
+    new Date(sceneStartTime.getTime() + durationForOneFrame * cycleNr * 1000);
 
   // The main evaluation loop as an async function that schedules itself
   async function evaluationLoop() {
@@ -100,10 +107,9 @@ export function startEx<S>(
 
       const nextPlannedEvaluation = calcTimeForCycle(completeCycleCount);
       await reality.onCycleFinished(nextPlannedEvaluation);
-
-    } catch (ex: any) {
-      console.log(`Error in evaluation: ${ex.message}`);
-      onEvalError(ex);
+    } catch (error) {
+      console.log(`Error in evaluation: ${(error as Error).message}`);
+      onEvalError(error as Error);
     }
 
     if (isRunning()) {
@@ -120,7 +126,7 @@ export function startEx<S>(
       const now = reality.now.getTime();
       const lastEval = lastEvaluationTime.getTime();
       if (now - lastEval > hangDetectionTimeSpan) {
-        onEvalError(new Error("Evaluation hanging"));
+        onEvalError(new Error('Evaluation hanging'));
       }
     }
   }, 100);
@@ -141,7 +147,8 @@ export function start(canvas: Canvas, scene: SceneFunc<void>) {
   const reality = Reality.forRealTime();
   return startEx(
     canvas,
-    err => console.log("Error in evaluation", err.message),
+    (err) => console.log('Error in evaluation', err.message),
     reality,
-    scene);
+    scene,
+  );
 }

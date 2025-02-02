@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    // Target and module settings
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution": "node",
+
+    // Strictness settings
+    "strict": true,
+
+    // Interoperability settings
+    "esModuleInterop": true,
+
+    // Code quality settings
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  }
+}

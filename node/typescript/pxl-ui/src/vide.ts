@@ -1,40 +1,47 @@
+// eslint-disable @typescript/eslint/no-explicit-any
+
 // This is a hack, required because it's not possible to pass
 // context to a promise callback, thus enabling to pass and collect
 // state to Vide functions "under the hood" in conjkunction with using await.
 
 export type SceneFunc<V> = () => V;
 
-let log = (message?: any, ...optionalParams: any[]) =>
+const log = (message?: unknown, ...optionalParams: unknown[]) =>
   console.debug(message, ...optionalParams);
 
 // We can't generalize _ctx because it's all singleton and single-thread hacks here,
 // so we would either specialize it to RenderCtx (which we may do later), or
 // leave it as any and lose type safety.
-export namespace ResumableStateHack {
-  export let popStack: readonly any[] | undefined = undefined;
-  export let pushStack: readonly any[] = [];
-  export let ctx: RenderCtx | undefined;
-}
+export const ResumableStateHack: {
+  popStack?: readonly unknown[];
+  pushStack: readonly unknown[];
+  ctx?: RenderCtx;
+} = { pushStack: [] };
 
-export function popState() {
+export function popState<S>() {
   if (ResumableStateHack.popStack === undefined) {
     return undefined;
   }
   if (ResumableStateHack.popStack.length === 0) {
-    throw new Error('popState: stack underflow - are you using language-builtin for / if similar?');
+    throw new Error(
+      'popState: stack underflow - are you using language-builtin for / if similar?',
+    );
   }
   const [x, ...xs] = ResumableStateHack.popStack;
   ResumableStateHack.popStack = xs;
-  return x;
+  return x as S;
 }
 
-export function pushState(state: any) {
+export function pushState(state: unknown) {
   log('Pushing state ...', state);
-  ResumableStateHack.pushStack = ResumableStateHack.pushStack === undefined ? [state] : [...ResumableStateHack.pushStack, state];
+  ResumableStateHack.pushStack =
+    ResumableStateHack.pushStack === undefined
+      ? [state]
+      : [...ResumableStateHack.pushStack, state];
 }
 
 export class Evaluable<T> {
-  private _state: readonly any[] | undefined = undefined;
+  private _state: readonly unknown[] | undefined;
 
   constructor(
     private readonly vide: SceneFunc<T>,
@@ -62,42 +69,73 @@ export class Evaluable<T> {
 
     // we know that all vide functions are sync!
     prepareCycle();
-    this.onCycleStart && this.onCycleStart();
-    const videRes = this.vide();
+
+    if (this.onCycleStart) {
+      this.onCycleStart();
+    }
+
+    const videRes = await this.vide();
     this._state = teardownCycle();
-    this.onCycleEnd && this.onCycleEnd();
+
+    if (this.onCycleEnd) {
+      this.onCycleEnd();
+    }
+
     return videRes;
   }
 }
 
 import { RenderCtx } from './renderCtx.js';
 
-export function vide<V, S>(func: (state: S | undefined, ctx: RenderCtx) => [V, S]): V;
-export function vide<V, S>(initial: () => S, func: (state: S, ctx: RenderCtx) => [V, S]): V;
-export function vide<V, S>(initial: S, func: (state: S, ctx: RenderCtx) => [V, S]): V;
-// @silkimen das kann prinzipiell weg (nur da für Overloading)
-export function vide<V, S>(arg1: any, arg2?: any): V {
-  if (typeof arg1 === 'function' && arg2 === undefined) {
-    const state = popState();
-    const [v, s] = arg1(state, ResumableStateHack.ctx!);
+export function vide<V, S>(
+  func: (state: S | undefined, ctx: RenderCtx) => [V, S],
+): V;
+export function vide<V, S>(
+  initial: () => S,
+  func: (state: S, ctx: RenderCtx) => [V, S],
+): V;
+export function vide<V, S>(
+  initial: S,
+  func: (state: S, ctx: RenderCtx) => [V, S],
+): V;
+export function vide<V, S>(
+  ...args:
+    | [(state: S | undefined, ctx: RenderCtx) => [V, S]]
+    | [initial: () => S, func: (state: S, ctx: RenderCtx) => [V, S]]
+    | [initial: S, func: (state: S, ctx: RenderCtx) => [V, S]]
+): V {
+  if (args.length === 1) {
+    const [func] = args;
+    const [v, s] = func(popState<S>(), ResumableStateHack.ctx!);
     pushState(s);
     return v;
   }
 
-  return vide<V, S>((state, ctx) => {
-    const s = state === undefined ? (typeof arg1 === 'function' ? arg1() : arg1) : state;
-    return arg2(s, ctx);
-  });
+  if (args.length === 2) {
+    const [initializer, func] = args;
+
+    return vide<V, S>((state, ctx) => {
+      return func(
+        state === undefined
+          ? typeof initializer === 'function'
+            ? (initializer as () => S)()
+            : initializer
+          : state,
+        ctx,
+      );
+    });
+  }
+
+  throw new Error('Invalid arguments for vide function');
 }
 
 class Mutable<V> {
-  constructor(public value: V) { }
+  constructor(public value: V) {}
 }
 
 export function useMemo<V>(initial: () => V): V;
 export function useMemo<V>(initial: V): V;
-// @silkimen das kann prinzipiell weg (nur da für Overloading)
-export function useMemo<V>(initial: any): V {
+export function useMemo<V>(initial: unknown): V {
   return vide(
     () => (typeof initial === 'function' ? initial() : initial),
     (state, ctx) => [state, state],
@@ -106,9 +144,10 @@ export function useMemo<V>(initial: any): V {
 
 export function useState<V>(initial: () => V): Mutable<V>;
 export function useState<V>(initial: V): Mutable<V>;
-// @silkimen das kann prinzipiell weg (nur da für Overloading)
-export function useState<V>(initial: any): Mutable<V> {
-  return useMemo(() => new Mutable(typeof initial === 'function' ? initial() : initial));
+export function useState<V>(initial: unknown): Mutable<V> {
+  return useMemo(
+    () => new Mutable(typeof initial === 'function' ? initial() : initial),
+  );
 }
 
 // type PromiseState<V, D> = { value: V | D; isResolved: boolean };

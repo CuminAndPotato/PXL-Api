@@ -1,20 +1,20 @@
 import sharp, { Sharp } from 'sharp';
 import { Color } from '../color.js';
 
-export type Frame = {
+export interface Frame {
   bmp: readonly Color[];
   duration: number;
-};
+}
 
-async function loadFrames(path: string): Promise<Frame[]> {
+export async function loadFrames(path: string): Promise<Frame[]> {
   // TODO Oh no: Duration is not supported by
 
   const image = sharp(path);
   const metadata = await image.metadata();
 
   const mkFrame = async (img: Sharp) => {
-    let bmp = await img.raw().toBuffer();
-    let colors = new Array<Color>(bmp.length / 4);
+    const bmp = await img.raw().toBuffer();
+    const colors = new Array<Color>(bmp.length / 4);
     for (let i = 0; i < colors.length; i++) {
       const idx = i * 4;
       colors[i] = Color.rgba(bmp[idx], bmp[idx + 1], bmp[idx + 2], bmp[idx + 3]);

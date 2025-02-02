@@ -38,8 +38,8 @@ export class Color {
   }
 
   brightness(): number {
-    let maxColor = Math.max(Math.max(this.r, this.g), this.b);
-    let minColor = Math.min(Math.min(this.r, this.g), this.b);
+    const maxColor = Math.max(Math.max(this.r, this.g), this.b);
+    const minColor = Math.min(Math.min(this.r, this.g), this.b);
     return (maxColor + minColor) / (2.0 * 255.0);
   }
 
@@ -56,10 +56,10 @@ export class Color {
     const a = Math.max(0, Math.min(255, Math.round(this.a)));
 
     // Convert to hexadecimal and pad with zeros if needed
-    const hexR = r.toString(16).padStart(2, "0");
-    const hexG = g.toString(16).padStart(2, "0");
-    const hexB = b.toString(16).padStart(2, "0");
-    const hexA = a.toString(16).padStart(2, "0");
+    const hexR = r.toString(16).padStart(2, '0');
+    const hexG = g.toString(16).padStart(2, '0');
+    const hexB = b.toString(16).padStart(2, '0');
+    const hexA = a.toString(16).padStart(2, '0');
 
     return `#${hexR}${hexG}${hexB}${hexA}`;
   }

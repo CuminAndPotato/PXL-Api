@@ -1,4 +1,4 @@
-import { Canvas, SKRSContext2D, createCanvas, loadImage } from '@napi-rs/canvas';
+import { Canvas, SKRSContext2D, createCanvas } from '@napi-rs/canvas';
 import { Color } from './color.js';
 
 export class RenderCtx {
@@ -62,7 +62,8 @@ export class RenderCtx {
         data[i],
         data[i + 1],
         data[i + 2],
-        data[i + 3]);
+        data[i + 3],
+      );
       colors.push(color);
     }
 
@@ -79,7 +80,8 @@ export class RenderCtx {
         data[i],
         data[i + 1],
         data[i + 2],
-        data[i + 3]);
+        data[i + 3],
+      );
       colors.push(color);
     }
 
