@@ -18,4 +18,4 @@ const sendBufferSize = env.get('PXL_SEND_BUFFER_SIZE').default(20).asIntPositive
 
 const { canvas } = await createProxy(host, sendBufferSize);
 
-await startEvaluation(canvas, scene);
+startEvaluation(canvas, scene);

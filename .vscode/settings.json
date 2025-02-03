@@ -10,6 +10,7 @@
   // Für Sourcecode: Bitte kein Prettier einschalten hier (zumindest nicht für die Lib-Files) - Danke :)
   // Ich kann in diesen Files kein Reasoning durchführen, wenn die Formatierung
   // automatisch geändert wird.
+  // Prinzipiell finde ich den Ansatz gut - so erspart man sich die ewigen Diskussionen.
 
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

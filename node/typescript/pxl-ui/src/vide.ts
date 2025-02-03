@@ -6,8 +6,10 @@ export type StateAwareFunc<V, S> = (state: Option<S>, ctx: RenderCtx) => [V, S];
 
 export type SceneFunc<S> = () => S;
 
-const log = (message?: unknown, ...optionalParams: unknown[]) =>
-  console.debug(message, ...optionalParams);
+// const log = (message?: unknown, ...optionalParams: unknown[]) =>
+//   console.debug(message, ...optionalParams);
+const log = (message?: unknown, ...optionalParams: unknown[]) => { };
+
 
 // We can't generalize _ctx because it's all singleton and single-thread hacks here,
 // so we would either specialize it to RenderCtx (which we may do later), or
