@@ -4,7 +4,7 @@ First Things First
 
 If you’re looking for neat PXL-App implementations, check out this repository:
 
-https://github.com/CuminAndPotato/PXL-Clock/blob/main/README.md
+[PXL-Clock Repository](https://github.com/CuminAndPotato/PXL-Clock)
 
 ---
 
