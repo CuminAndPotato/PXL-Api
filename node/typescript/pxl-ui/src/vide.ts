@@ -20,8 +20,8 @@ export const ResumableStateHack: {
   pushStack: []
 };
 
-type Option<T> =
-  { tag: 'Some'; value: T; }
+type Option<T>
+  = { tag: 'Some'; value: T; }
   | { tag: 'None'; };
 
 // Please leave that namespace here!
