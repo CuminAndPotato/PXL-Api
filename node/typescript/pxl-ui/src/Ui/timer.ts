@@ -1,5 +1,5 @@
 import { RenderCtx } from '../renderCtx.js';
-import { vide, getCtx } from '../vide.js';
+import { getCtx, videWithInitStateFunc } from '../vide.js';
 
 export class StopWatchController {
   private _isRunning = false;
@@ -71,7 +71,7 @@ export class StopWatchController {
 }
 
 export function stopWatch(autoStart = true) {
-  return vide(
+  return videWithInitStateFunc(
     () => new StopWatchController(autoStart),
     (controller, ctx) => {
       if (controller.isRunning) {

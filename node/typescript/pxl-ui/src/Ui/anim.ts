@@ -1,4 +1,4 @@
-import { vide } from '../vide.js';
+import { videWithInitStateFunc } from '../vide.js';
 import { StopWatchController } from './timer.js';
 
 type Repeat = 'StopAtEnd' | 'Loop' | 'RewindAndStop';
@@ -16,7 +16,7 @@ export class AnimationController {
     private endValue: number,
     private repeat: Repeat,
     private clamping: Clamping,
-  ) {}
+  ) { }
 
   get value(): number {
     return this._value;
@@ -124,7 +124,7 @@ function calculate(
   autoStart = true,
   clamping: Clamping = 'ClampBoth',
 ) {
-  return vide(
+  return videWithInitStateFunc(
     () => {
       const swc = new StopWatchController(autoStart !== undefined ? autoStart : true);
       const ac = new AnimationController(f, swc, duration, startValue, endValue, repeat, clamping);
