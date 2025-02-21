@@ -100,6 +100,13 @@ type FrameExtensions =
         ]
 
     [<Extension>]
+    static member withDuration(frames: Frame list, value) =
+        [
+            for frame in frames do
+                frame.withDuration(value)
+        ]
+
+    [<Extension>]
     static member crop(frame: Frame, left, top, right, bottom) =
         let bmp = frame.bmp
         let croppedBmp = new SKBitmap()

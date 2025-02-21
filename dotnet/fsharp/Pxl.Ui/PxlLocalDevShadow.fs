@@ -56,14 +56,20 @@ module Asset =
 [<RequireQualifiedAccess>]
 module Image =
 
-    /// This function must only called from the assembly that contains the assets.
-    let loadFromAsset (sourceDir: string, assetName: string) =
+    let internal load (sourceDir: string) (assetName: string) f =
         if isFsi() then
             Asset.load(sourceDir, assetName)
-            |> Pxl.Ui.Image.load
+            |> f
         else
             Asset.loadFromAssembly assetName (Assembly.GetCallingAssembly())
-            |> Pxl.Ui.Image.load
+            |> f
+
+    /// This function must only called from the assembly that contains the assets.
+    let loadFromAsset (sourceDir: string, assetName: string) =
+        load sourceDir assetName Pxl.Ui.Image.load
+
+    let loadFramesFromAsset (sourceDir: string, assetName: string) =
+        load sourceDir assetName Pxl.Ui.Image.loadFrames
 
 
 [<RequireQualifiedAccess>]

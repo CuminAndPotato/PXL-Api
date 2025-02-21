@@ -3,6 +3,7 @@ namespace Pxl.Ui
 open Pxl
 
 type Logic =
+
     static member inline counterCtrl(init: 'a, increment: 'a) =
         scene {
             let! count = useState { init }
@@ -21,7 +22,7 @@ type Logic =
     static member inline countUntil(init: 'a, increment: 'a, until: 'a) =
         scene {
             let! countCtrl = Logic.counterCtrl(init, increment)
-            do if countCtrl.value > until then
+            if countCtrl.value > until then
                 countCtrl.value <- init
             return countCtrl.value
         }
