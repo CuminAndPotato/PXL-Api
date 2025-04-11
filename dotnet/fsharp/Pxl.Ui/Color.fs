@@ -109,13 +109,12 @@ type [<Struct>] Color =
     [<MethodImpl(MethodImplOptions.AggressiveInlining)>]
     member this.brightness() =
         let r, g, b = this.r, this.g, this.b
+        // Standard brightness calculation using maximum value of the RGB components
+        // This will return 1.0 for white (255,255,255)
         let maxColor =
             let maxRG = if r > g then r else g
             if maxRG > b then maxRG else b
-        let minColor =
-            let minRG = if r < g then r else g
-            if minRG < b then minRG else b
-        float (maxColor + minColor) * 0.00196078431 // Equivalent to dividing by 510.0
+        float maxColor / 255.0
 
     /// Return a new Color by scaling this color’s RGB values by the given factor.
     [<MethodImpl(MethodImplOptions.AggressiveInlining)>]
@@ -123,9 +122,9 @@ type [<Struct>] Color =
         let value = clamp01 value
         {
             a = this.a
-            r = ((int this.r * int (value * 256.0)) >>> 8) |> byte
-            g = ((int this.g * int (value * 256.0)) >>> 8) |> byte
-            b = ((int this.b * int (value * 256.0)) >>> 8) |> byte
+            r = int this.r * int (value * 256.0) >>> 8 |> byte
+            g = int this.g * int (value * 256.0) >>> 8 |> byte
+            b = int this.b * int (value * 256.0) >>> 8 |> byte
         }
 
     /// Return a new Color by setting (or shifting) this color’s hue.

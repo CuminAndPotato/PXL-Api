@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <Version>0.0.6</Version>
+    <Version>0.0.7</Version>
 
     <Authors>Ronald Schlenker, Sefa Ilkimen</Authors>
     <Copyright>Copyright 2024 Cumin And Potato GmbH</Copyright>
