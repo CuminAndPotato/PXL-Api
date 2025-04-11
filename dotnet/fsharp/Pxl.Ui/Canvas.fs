@@ -35,7 +35,6 @@ type Canvas
     let onFrameReceivedEvent = new Event<Color[]>()
 
     let mutable _mode = CanvasMode.On
-    let mutable _brightness = 1.0
 
     do
         bbq.Consume(
@@ -49,14 +48,8 @@ type Canvas
 
     member _.Mode with get() = _mode and set(v) = _mode <- v
     member _.Metadata = metadata
-    member _.Brightness
-        with get() = _brightness
-        and set(v) = _brightness <- clamp01 v
     member _.SendBufferSize = sendFrameBufferSize
     member _.PushFrameSafe(pixels: Color[]) =
-        // TODO: Non linear brightness
-        for i = 0 to pixels.Length - 1 do
-            pixels[i] <- pixels[i].brightness(_brightness)
         if _mode = CanvasMode.On then
             // TODO: Safe - good?
             bbq.Push(pixels)
