@@ -24,7 +24,13 @@ module Interop =
         dest
 
 [<Sealed>]
-type RenderCtx(width: int, height: int, fps: int) =
+type RenderCtx
+    (
+        width: int,
+        height: int,
+        fps: int,
+        ?onEndCycle: RenderCtx -> Color array -> unit
+    ) =
     let _skSurface = SKSurface.Create(SKImageInfo(width, height))
     let _skCanvas = _skSurface.Canvas
     let _skImageInfo = SKImageInfo(width, height, SKColorType.Rgba8888)
@@ -71,7 +77,7 @@ type RenderCtx(width: int, height: int, fps: int) =
         Interop.pixelSpanToArray (this.GetRawSnapshot().GetPixelSpan())
 
     // TODO SendBuffer - pass frame array from outside
-    member internal _.EndCycle(dest: Color[]) =
+    member internal this.EndCycle(dest: Color[]) =
         do _skCanvas.Flush()
 
         let couldRead = _skSurface.ReadPixels(_skImageInfo, _skBmp.GetPixels(), _skImageInfo.RowBytes, 0, 0)
@@ -81,3 +87,5 @@ type RenderCtx(width: int, height: int, fps: int) =
         // we know that the struct layout of SkColor in our case is RGBA8888 (see above)
         let srcPixelxSpan = _skBmp.GetPixelSpan()
         Interop.copyPixelSpanToArray srcPixelxSpan dest
+
+        onEndCycle |> Option.iter (fun f -> f this dest)

@@ -33,6 +33,7 @@ module Evaluation =
     let start
         (
             canvas: Canvas,
+            renderCtx: RenderCtx,
             onEvalError: Exception -> unit,
             reality: Reality,
             readButtons: unit -> Buttons,
@@ -49,7 +50,6 @@ module Evaluation =
                     for i in 0 .. canvas.SendBufferSize - 1 do
                         Array.zeroCreate<Color>(canvas.Metadata.width * canvas.Metadata.height)
                 ]
-            let renderCtx = RenderCtx(canvas.Metadata.width, canvas.Metadata.height, canvas.Metadata.fps)
             let durationForOneFrame = 1.0 / float canvas.Metadata.fps
             let sceneStartTime = reality.Now
             let mutable lastSceneState = None

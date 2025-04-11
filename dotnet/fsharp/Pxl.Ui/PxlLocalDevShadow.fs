@@ -112,6 +112,7 @@ module Simulator =
                     let stop =
                         Evaluation.start(
                             canvas,
+                            RenderCtx(canvas.Metadata.width, canvas.Metadata.height, canvas.Metadata.fps),
                             (fun ex ->
                                 printfn $"Error in evaluating App logic: {ex.Message}"
                                 onCanvasEnd ()
