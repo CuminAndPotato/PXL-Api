@@ -26,7 +26,7 @@ type Trigger =
         scene {
             let! startTrigger = Trigger.falseToTrue(startWhen)
             let! endTrigger = Trigger.trueToFalse(holdAsLongAs)
-            let! isHolding = useState { defaultArg initialValue false }
+            let! isHolding = useState (defaultArg initialValue false)
             do
                 if startTrigger then
                     isHolding.value <- true
@@ -41,7 +41,7 @@ type Trigger =
 
     static member startAndHoldForCycles(startWhen, holdCycleCount: int, ?initialValue) =
         scene {
-            let! count = useState { holdCycleCount }
+            let! count = useState holdCycleCount
             return! Trigger.startAndHold(
                 startWhen,
                 count.value > 0,
@@ -63,7 +63,7 @@ type Trigger =
 
     static member inline restartWhenValueChanges(value, [<InlineIfLambda>] child, ?startImmediately) =
         scene {
-            let! lastValue = useState { None }
+            let! lastValue = useState None
             let shouldRestart =
                 match lastValue.value, defaultArg startImmediately true with
                 | None, true -> true
@@ -75,7 +75,7 @@ type Trigger =
 
     static member inline valueChanged(value: 'a) =
         scene {
-            let! lastValue = useState { value }
+            let! lastValue = useState value
             let changed = lastValue.value <> value
             do lastValue.value <- value
             return changed

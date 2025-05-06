@@ -6,7 +6,7 @@ type Logic =
 
     static member inline counterCtrl(init: 'a, increment: 'a) =
         scene {
-            let! count = useState { init }
+            let! count = useState init
             do count.value <- count.value + increment
             return count
         }
@@ -34,13 +34,32 @@ type Logic =
 
     static member inline hasChanged(current, ?initial) =
         scene {
-            let! last = useState {
+            let! last = useStateWith (fun () ->
                 match defaultArg initial false with
                 | true -> Some current
                 | false -> None
-            }
+                )
             let current = Some current
             let hasChanged = last.value <> current
             do last.value <- current
             return hasChanged
+        }
+
+    static member inline trackChange (getValue: unit -> _) =
+        scene {
+            let currentValue = getValue ()
+            let! last = useState currentValue
+            return ()
+
+            // let hasChanged = currentValue <> last.value
+            // let lastValue = last.value
+
+            // do last.value <- currentValue
+
+            // return
+            //     {|
+            //         lastValue = lastValue
+            //         currentValue = currentValue
+            //         hasChanged = hasChanged
+            //     |}
         }

@@ -23,7 +23,7 @@ type FramwState =
 type SpriteMap(cells, cols) =
     inherit Grid<Frame>(cells, cols)
     member this.animate(cellIndexes: list<int * int>) =
-        useMemo { cellIndexes |> List.map (fun (x, y) -> this[x, y]) }
+        useMemoWith (fun () -> cellIndexes |> List.map (fun (x, y) -> this[x, y]) )
 
 
 
@@ -184,7 +184,7 @@ type DrawImage =
     static member inline image(frames: Frame list, x, y, ?repeat) =
         scene {
             let! ctx = getCtx ()
-            let! currFrameState = useState { None }
+            let! currFrameState = useState None
             let state =
                 let mkState idx =
                     let frame = frames[idx]
@@ -215,7 +215,7 @@ type DrawImage =
 
     static member inline image(stream: Stream, x, y, ?repeat) =
         scene {
-            let! frames = useMemo { Image.loadFrames stream }
+            let! frames = useMemoWith (fun () -> Image.loadFrames stream)
             DrawImage.image(frames, x, y, ?repeat = repeat)
         }
 

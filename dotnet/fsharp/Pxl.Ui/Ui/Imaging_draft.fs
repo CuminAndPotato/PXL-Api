@@ -188,13 +188,13 @@ type Image(createFrames: unit -> list<Frame>) =
         scene {
             let! ctx = getCtx ()
 
-            let! frames = useMemo { createFrames () }
+            let! frames = useMemoWith createFrames
 
             if frames.Length = 1 then
                 do ctx.canvas.DrawBitmap(frames.[0].bmp, f32 this._x, f32 this._y)
 
             if frames.Length > 1 then
-                let! currFrameState = useState { None }
+                let! currFrameState = useState None
                 let state =
                     let mkState idx =
                         let frame = frames[idx]

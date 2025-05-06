@@ -184,35 +184,27 @@ module Vide =
                     do currVal <- value
         override _.ToString() = sprintf $"Mutable({currVal})"
 
-    type DelayBuilder() =
-        member _.Yield(x) = x
-        member _.Zero() = ()
-        member _.Combine(_, b) = b
-        member _.Delay(f) = f
-
-    type UseMemoBuilder() =
-        inherit DelayBuilder()
-        member inline _.Run([<InlineIfLambda>] f) : Vide<_,_> =
-            fun s ctx ->
-                let s = s |> Option.defaultWith (fun () -> f ())
-                s, Some s
-
-    type UseStateBuilder() =
-        inherit DelayBuilder()
-        member inline _.Run([<InlineIfLambda>] f) : Vide<_,_> =
-            fun s ctx ->
-                let s = s |> Option.defaultWith (fun () -> Mutable(f ()))
-                s, Some s
-
 let scene = Vide.VideBuilder()
-let useMemo = Vide.UseMemoBuilder()
-let useState = Vide.UseStateBuilder()
 
-let x () = scene {
-    let! a = useState { 0 }
-    let! b = useState { 0 }
-    return a.value + b.value
-}
+let useMemo value : Vide<_,_> =
+    fun s ctx ->
+        let s = s |> Option.defaultWith (fun () -> value)
+        s, Some s
+
+let useMemoWith f : Vide<_,_> =
+    fun s ctx ->
+        let s = s |> Option.defaultWith (fun () -> f ())
+        s, Some s
+
+let useState value : Vide<_,_> =
+    fun s ctx ->
+        let s = s |> Option.defaultWith (fun () -> Vide.Mutable(value))
+        s, Some s
+
+let useStateWith f : Vide<_,_> =
+    fun s ctx ->
+        let s = s |> Option.defaultWith (fun () -> Vide.Mutable(f ()))
+        s, Some s
 
 // this is for "else" branches
 [<GeneralizableValue>]

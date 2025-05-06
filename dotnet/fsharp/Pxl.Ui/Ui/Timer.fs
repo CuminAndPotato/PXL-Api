@@ -69,7 +69,7 @@ type Timer =
 
     static member inline computeInterval(interval: TimeSpan, [<InlineIfLambda>] f, ?autoStart) =
         scene {
-            let! v = useState { f () }
+            let! v = useStateWith f
             Timer.interval(interval, (fun swc ctx -> v.value <- f()), ?autoStart = autoStart)
             return v.value
         }
