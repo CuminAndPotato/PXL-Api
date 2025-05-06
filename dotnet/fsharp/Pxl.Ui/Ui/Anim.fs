@@ -164,7 +164,7 @@ type Anim =
         if values.Length = 0 then
             failwith "At least one values is required."
         scene {
-            let! idx = useState 0
+            let! idx = useState { 0 }
             let! ac = Anim.linear(durationInS, 0, 1, ?repeat = repeat, ?autoStart = autoStart)
             let! shallIncrement = Trigger.falseToTrue ac.isAtEndTrigger
             if shallIncrement then
