@@ -42,7 +42,7 @@ module Evaluation =
         let mutable shouldEvaluate = true
         let isRunning () = shouldEvaluate && not canvas.Ct.IsCancellationRequested
 
-        let mutable lastEvaluationTime = None
+        let mutable lastEvaluationTime : DateTimeOffset option = None
 
         fun () ->
             let frameArrays =
@@ -51,12 +51,27 @@ module Evaluation =
                         Array.zeroCreate<Color>(canvas.Metadata.width * canvas.Metadata.height)
                 ]
             let durationForOneFrame = 1.0 / float canvas.Metadata.fps
-            let sceneStartTime = reality.Now
+            let mutable sceneStartTime = reality.Now
             let mutable lastSceneState = None
             let mutable completeCycleCount = 0
             let calcTimeForCycle cycleNr = sceneStartTime.AddSeconds(durationForOneFrame * float cycleNr)
             while isRunning () do
+                // when the diff between last eval time and now is > 1s, we reset the whole thing
+                do
+                    match lastEvaluationTime with
+                    | Some lastEvaluationTime ->
+                        let diff = reality.Now - lastEvaluationTime
+                        if
+                            diff.Ticks <= 0
+                            || abs diff.Ticks > TimeSpan.FromSeconds(1.0).Ticks
+                        then
+                            sceneStartTime <- reality.Now
+                            lastSceneState <- None
+                            completeCycleCount <- 0
+                    | _ -> ()
+
                 do lastEvaluationTime <- Some reality.Now
+
                 try
                     // Für die Szene ist es wichtig, dass "now" keinen Jitter hat.
                     // Wir berechnen jeden Zyklus - egal, wie weit wir hintendran sind.
