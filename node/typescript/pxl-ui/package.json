@@ -8,7 +8,7 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "rimraf dist && tsc",
+    "build": "rm -rf dist && tsc",
     "lint": "eslint -c eslint.config.mjs"
   },
   "dependencies": {

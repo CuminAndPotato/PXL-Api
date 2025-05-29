@@ -2,7 +2,9 @@
 // context to a promise callback, thus enabling to pass and collect
 // state to Vide functions "under the hood" in conjkunction with using await.
 
-export type StateAwareFunc<V, S> = (state: Option<S>, ctx: RenderCtx) => [V, S];
+export type State<S> = S | undefined;
+
+export type StateAwareFunc<V, S> = (state: State<S>, ctx: RenderCtx) => [V, S];
 
 export type SceneFunc<S> = () => S;
 
@@ -22,23 +24,7 @@ export const ResumableStateHack: {
   pushStack: []
 };
 
-type Option<T>
-  = { tag: 'Some'; value: T; }
-  | { tag: 'None'; };
-
-// Please leave that namespace here!
-namespace Option {
-  export const some = <T>(value: T): Option<T> => ({ tag: 'Some', value });
-  export const none = <T>(): Option<T> => ({ tag: 'None' });
-
-  export const defaultWith = <T>(def: () => T, opt: Option<T>): T =>
-    opt.tag === 'Some' ? opt.value : def();
-
-  export const defaultValue = <T>(def: T, opt: Option<T>): T =>
-    opt.tag === 'Some' ? opt.value : def;
-}
-
-export function popState<S>(): Option<S> {
+export function popState<S>(): State<S> {
   // Why Option?
   // undefined can indeed be a state value, which has semantic different than
   // "no state", which then would result in taking the initial state, which
@@ -47,14 +33,14 @@ export function popState<S>(): Option<S> {
   // For this statement, we use an DU Option, that lets us safely
   // distinguish between "Some" and "None".
   if (ResumableStateHack.popStack === undefined)
-    return Option.none();
+    return undefined;
 
   if (ResumableStateHack.popStack.length === 0)
     throw new Error('popState: stack underflow - are you using language-builtin for / if similar?');
 
   const [x, ...xs] = ResumableStateHack.popStack;
   ResumableStateHack.popStack = xs;
-  return Option.some(x as S);
+  return x as S;
 }
 
 export function pushState(state: unknown) {
@@ -123,7 +109,7 @@ export function vide<V, S>(f: StateAwareFunc<V, S>): V {
 }
 
 export function videWithInitStateFunc<V, S>(initial: () => S, f: (state: S, ctx: RenderCtx) => [V, S]): V {
-  const s = Option.defaultWith(initial, popState<S>());
+  const s = popState<S>() ?? initial();
   const [vf, sf] = f(s, ResumableStateHack.ctx!);
   pushState(sf);
   return vf;
@@ -131,7 +117,7 @@ export function videWithInitStateFunc<V, S>(initial: () => S, f: (state: S, ctx:
 
 export function videWithInitState<V, S>(initial: S, f: (state: S, ctx: RenderCtx) => [V, S]): V {
   // manually inlining ok here (i.e. don't use videWithInitStateFunc)
-  const s = Option.defaultValue(initial, popState<S>());
+  const s = popState<S>() ?? initial;
   const [vf, sf] = f(s, ResumableStateHack.ctx!);
   pushState(sf);
   return vf;
