@@ -55,26 +55,31 @@ type Timer =
                 do controller.eval(ctx.now)
             controller, Some controller
 
-    static member inline interval(interval: TimeSpan, [<InlineIfLambda>] f: StopWatchController -> RenderCtx -> unit, ?autoStart: bool) =
+    static member inline interval(interval: TimeSpan, ?autoStart: bool) =
         scene {
             let! swc = Timer.stopWatch(?autoStart = autoStart)
-            let! ctx = getCtx ()
-            if swc.elapsed >= interval then
-                do swc.rewind(TimeSpan.Zero)
-                do f swc ctx
+            let trigger =
+                if swc.elapsed >= interval then
+                    do swc.rewind(TimeSpan.Zero)
+                    true
+                else
+                    false
+            return {| isElapsed = trigger; controller = swc |}
         }
 
-    static member inline interval(intervalInS, [<InlineIfLambda>] f, ?autoStart) =
-        Timer.interval(TimeSpan.FromSeconds (float intervalInS), f, ?autoStart = autoStart)
+    static member inline interval(intervalInS, ?autoStart) =
+        Timer.interval(TimeSpan.FromSeconds (float intervalInS), ?autoStart = autoStart)
 
-    static member inline computeInterval(interval: TimeSpan, [<InlineIfLambda>] f, ?autoStart) =
+    static member inline toggleValues(durationInS, values: _ list, ?repeat, ?autoStart) =
+        if values.Length = 0 then
+            failwith "At least one values is required."
         scene {
-            let! v = useState { f () }
-            Timer.interval(interval, (fun swc ctx -> v.value <- f()), ?autoStart = autoStart)
-            return v.value
+            let! idx = useState { 0 }
+            let! changeValue = Timer.interval(durationInS, ?autoStart = autoStart)
+            if changeValue.isElapsed then
+                let nextIdx = (idx.value + 1) % values.Length
+                idx.value <- nextIdx
+            return values[idx.value]
         }
-
-    static member inline computeInterval(intervalInS: float, [<InlineIfLambda>] f, ?autoStart) =
-        Timer.computeInterval(TimeSpan.FromSeconds (float intervalInS), f, ?autoStart = autoStart)
 
     // TODO: Delay
