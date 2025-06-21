@@ -55,20 +55,17 @@ type Timer =
                 do controller.eval(ctx.now)
             controller, Some controller
 
-    static member inline interval(interval: TimeSpan, ?autoStart: bool) =
+    static member inline interval(durationInS, ?autoStart: bool) =
         scene {
             let! swc = Timer.stopWatch(?autoStart = autoStart)
             let trigger =
-                if swc.elapsed >= interval then
+                if swc.elapsed.TotalSeconds >= durationInS then
                     do swc.rewind(TimeSpan.Zero)
                     true
                 else
                     false
             return {| isElapsed = trigger; controller = swc |}
         }
-
-    static member inline interval(intervalInS, ?autoStart) =
-        Timer.interval(TimeSpan.FromSeconds (float intervalInS), ?autoStart = autoStart)
 
     static member inline toggleValues(durationInS, values: _ list, ?repeat, ?autoStart) =
         if values.Length = 0 then
