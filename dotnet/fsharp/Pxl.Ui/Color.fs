@@ -63,6 +63,10 @@ type [<Struct>] Color =
             b = byte (255.0 * (b1 + m))
         }
 
+    static member hsva(h: float, s: float, v: float, a: float) =
+        let color = Color.hsv(h, s, v)
+        { color with a = a * 255.0 |> byte }
+
     /// Convert an RGB color (plus alpha) to HSV
     member this.toHSV() =
         let rf = float this.r / 255.0
