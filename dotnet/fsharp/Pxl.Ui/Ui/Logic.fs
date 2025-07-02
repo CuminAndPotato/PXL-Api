@@ -44,3 +44,26 @@ type Logic =
             do last.value <- current
             return hasChanged
         }
+
+    /// Returns true if the current value has equaled the expected value for at least the specified timespan (in milliseconds)
+    static member inline lag(currentValue: 'a, expectedValue: 'a, timespanMs: int) =
+        scene {
+            let! lastMatchTime = useState { None }
+            let now = System.DateTime.UtcNow
+            let res =
+                if currentValue = expectedValue then
+                    // Update the match time if this is the first match
+                    if lastMatchTime.value = None then
+                        do lastMatchTime.value <- Some now
+
+                    // Calculate how long the value has matched
+                    let matchStartTime = lastMatchTime.value.Value
+                    let elapsed = now - matchStartTime
+                    elapsed.TotalMilliseconds >= float timespanMs
+                else
+                    // Reset the timer when values don't match
+                    do lastMatchTime.value <- None
+                    false
+            return res
+        }
+
