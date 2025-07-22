@@ -84,6 +84,7 @@ type VAlign =
     | Center
     | Bottom
     | Row of int
+    | Y of float
 
 [<AutoOpen>]
 type DrawText =
@@ -120,6 +121,7 @@ type DrawText =
                 | VAlign.Center -> (ctx.height - font.height) / 2.0
                 | VAlign.Bottom -> ctx.height - font.height
                 | VAlign.Row row -> (font.height + 1.0) * float row
+                | VAlign.Y y -> y
             let textWidth = measureText displayText
             let! x = Anim.linear(float textWidth / speedInPxPerSec, 0, -textWidth, repeat = Repeat.Loop)
             let x =
