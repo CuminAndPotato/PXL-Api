@@ -25,7 +25,7 @@ import { getCtx } from 'pxl-ui/src/vide';
 
 export function scene() {
   const { value: brightness } = Anim.linear(5, 0, 1, 'Loop', true);
-  const color = Colors.blue.setBrightness(brightness);
+  const color = Colors.blue.brightness(brightness);
   const ctx = getCtx();
 
   Draw.rect(ctx, 0, 0, ctx.widthHalf, ctx.heightHalf, color.toHex());
