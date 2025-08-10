@@ -1,0 +1,24 @@
+{
+  "name": "pxl-ui",
+  "version": "0.0.1",
+  "author": {
+    "name": "Cumin & Potato GmbH"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "lint": "eslint -c eslint.config.mjs"
+  },
+  "dependencies": {
+    "@microsoft/signalr": "^8.0.0",
+    "gif-frames": "^1.0.1",
+    "node-fetch": "^3.3.2",
+    "rxjs": "^7.8.1",
+    "sharp": "^0.33.4"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.7"
+  }
+}

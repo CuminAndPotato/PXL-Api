@@ -1,0 +1,25 @@
+{
+  "private": true,
+  "workspaces": [
+    "*"
+  ],
+  "scripts": {
+    "build": "npm run build -w ./pxl-ui",
+    "lint": "npm run lint -ws",
+    "watch:statefulPxl": "npm run watch -w pxl-ui-tests -- --app 01_statefulPxl",
+    "watch:animations": "npm run watch -w pxl-ui-tests -- --app 02_animations",
+    "watch:sefa": "npm run watch -w pxl-ui-tests -- --app 03_sefa",
+    "debug:sefa": "npm run debug -w pxl-ui-tests -- --app 03_sefa"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "@typescript-eslint/eslint-plugin": "^8.22.0",
+    "@typescript-eslint/parser": "^8.22.0",
+    "eslint": "^9.19.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^15.14.0",
+    "typescript-eslint": "^8.22.0"
+  }
+}
