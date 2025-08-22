@@ -4,7 +4,7 @@ import { Colors } from 'pxl-ui/src/colors';
 import { getCtx } from 'pxl-ui/src/vide';
 
 /*
-  Test on the PXL-Clock:
+  Test on the PXL Clock:
 
   1. Tell the daemon to turn off the canvas:
 

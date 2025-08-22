@@ -1,7 +1,7 @@
 # License
 
 **1. Purpose**
-This software and its associated files (the “Software”) are provided solely for the purpose of developing, testing, and running applications on PXL-Clock hardware (“Authorized Use”). Any other use of the Software is prohibited.
+This software and its associated files (the “Software”) are provided solely for the purpose of developing, testing, and running applications on PXL Clock hardware (“Authorized Use”). Any other use of the Software is prohibited.
 
 **2. Restrictions**
 - You may not use the Software for any purpose other than the Authorized Use.

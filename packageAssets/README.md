@@ -1,1 +1,1 @@
-see: https://github.com/CuminAndPotato/PXL-Clock/blob/main/README.md
+see: https://github.com/CuminAndPotato/pxl-clock/blob/main/README.md
