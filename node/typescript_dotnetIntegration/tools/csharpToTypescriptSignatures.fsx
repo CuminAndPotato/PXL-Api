@@ -329,8 +329,3 @@ module TsGen =
     printfn "Wrote %s" outPath
 
     ()
-
-TsGen.generate
-    ["/Users/ronald/repos/github.CnP/PXL-Api/node/typescript_dotnetIntegration/tools/skiasharp.3.119.0/lib/net8.0/SkiaSharp.dll"]
-    "/Users/ronald/repos/github.CnP/PXL-Api/node/typescript_dotnetIntegration/src/types.d.ts"
-    (Some "SkiaSharp")
