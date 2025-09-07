@@ -23,14 +23,22 @@ module Interop =
         copyPixelSpanToArray srcPixelxSpan dest
         dest
 
-[<Sealed>]
-type RenderCtx
+type IDirectDrawable =
+    abstract member End: RenderCtx -> unit
+
+// we use this to provide extensions like line, pxl, etc.
+and DrawEntry(ctx: RenderCtx) =
+    member _.Ctx = ctx
+
+and [<Sealed>] RenderCtx
     (
         width: int,
         height: int,
         fps: int,
         ?onEndCycle: RenderCtx -> Color array -> unit
-    ) =
+    )
+    =
+
     let _skSurface = SKSurface.Create(SKImageInfo(width, height))
     let _skCanvas = _skSurface.Canvas
     let _skImageInfo = SKImageInfo(width, height, SKColorType.Rgba8888)
@@ -45,6 +53,8 @@ type RenderCtx
     let mutable _startTime = DateTimeOffset.MinValue
     let mutable _clear = defaultClearBackground
     let mutable _buttons = { lowerButtonPressed = false; upperButtonPressed = false }
+
+    let mutable _currentDirectDrawable : IDirectDrawable option = None
 
     member _.width = _width
     member _.height = _height
@@ -66,6 +76,20 @@ type RenderCtx
         _clear <- defaultClearBackground
         _skCanvas.ResetMatrix()
 
+    member this.BeginDirectDrawable(directDrawable: 'a when 'a :> IDirectDrawable) : 'a =
+        this.EndDirectDrawable()
+        _currentDirectDrawable <- Some (directDrawable :> IDirectDrawable)
+        directDrawable
+
+    member this.Draw = DrawEntry(this)
+
+    member this.EndDirectDrawable() =
+        match _currentDirectDrawable with
+        | Some drawable -> drawable.End(this)
+        | None -> ()
+
+        _currentDirectDrawable <- None
+
     member _.ClearScreenOnCycleCompleted(value) =
         _clear <- value
 
@@ -78,6 +102,8 @@ type RenderCtx
 
     // TODO SendBuffer - pass frame array from outside
     member internal this.EndCycle(dest: Color[]) =
+        do this.EndDirectDrawable()
+
         do _skCanvas.Flush()
 
         let couldRead = _skSurface.ReadPixels(_skImageInfo, _skBmp.GetPixels(), _skImageInfo.RowBytes, 0, 0)

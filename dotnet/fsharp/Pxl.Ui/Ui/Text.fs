@@ -55,14 +55,18 @@ type text(text: string) =
             .fontSize(font.height)
             .ascent(font.ascent)
 
-    member this.Run(_: Vide<_,_>) : Vide<_,_> =
-        fun _ ctx ->
+    interface IDirectDrawable with
+        member this.End(ctx: RenderCtx) =
             use paint = this.createPaint()
             ctx.canvas.DrawText(
                 this._data.text,
                 f32 this._data.x,
                 f32 <| this._data.y + this._data.ascent + this._data.fontSize, // ascent is negative (!)
                 paint)
+
+    member this.Run(_: Vide<_,_>) : Vide<_,_> =
+        fun _ ctx ->
+            (this :> IDirectDrawable).End(ctx)
             (), State.none
 
     static member inline mono3x5(value, ?x, ?y) = text(value).font(Fonts.mono3x5).xy(defaultArg x 0.0, defaultArg y 0.0)

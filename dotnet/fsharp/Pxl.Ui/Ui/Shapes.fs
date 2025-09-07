@@ -34,15 +34,22 @@ type pxl() =
     member inline this.y(y) = this._xy <- {| this._xy with y = f32 y |}; this
     member inline this.xy(x, y) = this.x(x).y(y)
 
-    member this.Run(_: Vide<_,_>) : Vide<_,_> =
-        fun _ ctx ->
+    interface IDirectDrawable with
+        member this.End(ctx: RenderCtx) =
             this.WithStroke <| fun paint ->
                 ctx.canvas.DrawPoint(this._xy.x, this._xy.y, paint)
+
+    member this.Run(_: Vide<_,_>) : Vide<_,_> =
+        fun _ ctx ->
+            (this :> IDirectDrawable).End(ctx)
             (), State.none
 
     static member inline xy(x, y) = pxl().x(x).y(y)
 
 type Vide.VideBaseBuilder with member inline _.Yield(b: pxl) = b {()}
+
+type DrawEntry with
+    member inline _.pxl(x, y) = pxl().x(x).y(y)
 
 
 type rect() =
@@ -73,16 +80,23 @@ type rect() =
     member inline this.h(h) = this._wh <- {| this._wh with h = f32 h |}; this
     member inline this.wh(w, h) = this.w(w).h(h)
 
-    member this.Run(_: Vide<_,_>) : Vide<_,_> =
-        fun _ ctx ->
+    interface IDirectDrawable with
+        member this.End(ctx: RenderCtx) =
             this.WithStrokeFill <| fun paint ->
                 ctx.canvas.DrawRect(this._xy.x, this._xy.y, this._wh.w, this._wh.h, paint)
+
+    member this.Run(_: Vide<_,_>) : Vide<_,_> =
+        fun _ ctx ->
+            (this :> IDirectDrawable).End(ctx)
             (), State.none
 
     static member inline xy(x, y) = rect().x(x).y(y)
     static member inline xywh(x, y, w, h) = rect().x(x).y(y).w(w).h(h)
 
 type Vide.VideBaseBuilder with member inline _.Yield(b: rect) = b {()}
+
+type DrawEntry with
+    member inline _.rect(x, y, w, h) = rect().x(x).y(y).w(w).h(h)
 
 
 type line() =
@@ -110,10 +124,14 @@ type line() =
     member inline this.p2(x, y) = this.x2(x).y2(y)
     member inline this.p1p2(x1, y1, x2, y2) = this.x1(x1).y1(y1).x2(x2).y2(y2)
 
-    member this.Run(_: Vide<_,_>) : Vide<_,_> =
-        fun _ ctx ->
+    interface IDirectDrawable with
+        member this.End(ctx: RenderCtx) =
             this.WithStroke <| fun paint ->
                 ctx.canvas.DrawLine(this._xy1.x, this._xy1.y, this._xy2.x, this._xy2.y, paint)
+
+    member this.Run(_: Vide<_,_>) : Vide<_,_> =
+        fun _ ctx ->
+            (this :> IDirectDrawable).End(ctx)
             (), State.none
 
     static member inline p1p2(x1, y1, x2, y2) = line().p1p2(x1, y1, x2, y2)
@@ -121,6 +139,9 @@ type line() =
     // TODO: H/V line; line with angle
 
 type Vide.VideBaseBuilder with member inline _.Yield(b: line) = b {()}
+
+type DrawEntry with
+    member inline _.line(x1, y1, x2, y2) = line().p1p2(x1, y1, x2, y2)
 
 
 type circle() =
@@ -139,16 +160,23 @@ type circle() =
 
     member inline this.xy(x, y) = this.x(x).y(y)
 
-    member this.Run(_: Vide<_,_>) : Vide<_,_> =
-        fun _ ctx ->
+    interface IDirectDrawable with
+        member this.End(ctx: RenderCtx) =
             this.WithStrokeFill <| fun paint ->
                 ctx.canvas.DrawCircle(this._xyr.x, this._xyr.y, this._xyr.r, paint)
+
+    member this.Run(_: Vide<_,_>) : Vide<_,_> =
+        fun _ ctx ->
+            (this :> IDirectDrawable).End(ctx)
             (), State.none
 
     static member inline xy(x, y) = circle().x(x).y(y)
     static member inline xyr(x, y, r) = circle().x(x).y(y).r(r)
 
 type Vide.VideBaseBuilder with member inline _.Yield(b: circle) = b {()}
+
+type DrawEntry with
+    member inline _.circle(x, y, r) = circle().x(x).y(y).r(r)
 
 
 // TODO: we still need this - or can we just make an overload of Oval?
@@ -180,16 +208,23 @@ type oval() =
     member inline this.h(h) = this._wh <- {| this._wh with h = f32 h |}; this
     member inline this.wh(w, h) = this.w(w).h(h)
 
-    member this.Run(_: Vide<_,_>) : Vide<_,_> =
-        fun _ ctx ->
+    interface IDirectDrawable with
+        member this.End(ctx: RenderCtx) =
             this.WithStrokeFill <| fun paint ->
                 ctx.canvas.DrawOval(SKRect.Create(this._xy.x, this._xy.y, this._wh.w, this._wh.h), paint)
+
+    member this.Run(_: Vide<_,_>) : Vide<_,_> =
+        fun _ ctx ->
+            (this :> IDirectDrawable).End(ctx)
             (), State.none
 
     static member inline xywh(x, y, w, h) = oval().x(x).y(y).w(w).h(h)
     static member inline centerRad(cx, cy, rx, ry) = oval().x(cx - rx).y(cy - ry).w(rx * 2.0).h(ry * 2.0)
 
 type Vide.VideBaseBuilder with member inline _.Yield(b: oval) = b {()}
+
+type DrawEntry with
+    member inline _.oval(x, y, w, h) = oval().x(x).y(y).w(w).h(h)
 
 
 type arc() =
@@ -229,8 +264,8 @@ type arc() =
     member inline this.startAngle(angle) = this._angles <- {| this._angles with start = f32 angle |}; this
     member inline this.angle(angle) = this._angles <- {| this._angles with arc = f32 angle |}; this
 
-    member this.Run(_: Vide<_,_>) : Vide<_,_> =
-        fun _ ctx ->
+    interface IDirectDrawable with
+        member this.End(ctx: RenderCtx) =
             this.WithStrokeFill <| fun paint ->
                 let w = this._wh.w
                 let h = this._wh.h
@@ -240,11 +275,18 @@ type arc() =
                     this._angles.arc,
                     true,
                     paint)
+
+    member this.Run(_: Vide<_,_>) : Vide<_,_> =
+        fun _ ctx ->
+            (this :> IDirectDrawable).End(ctx)
             (), State.none
 
     static member inline xywh(x, y, w, h) = arc().x(x).y(y).w(w).h(h)
 
 type Vide.VideBaseBuilder with member inline _.Yield(b: arc) = b {()}
+
+type DrawEntry with
+    member inline _.arc(x, y, w, h) = arc().x(x).y(y).w(w).h(h)
 
 
 // TODO: we could provide another, more PXL-like API / fluent
@@ -254,8 +296,8 @@ type Polygon() =
     member val _geo = None with get, set
     member inline this.geo(f) = this._geo <- Some f; this
 
-    member this.Run(_: Vide<_,_>) : Vide<_,_> =
-        fun _ ctx ->
+    interface IDirectDrawable with
+        member this.End(ctx: RenderCtx) =
             let path = new SKPath()
             match this._geo with
             | Some f ->
@@ -263,6 +305,10 @@ type Polygon() =
                 this.WithStrokeFill <| fun paint ->
                     ctx.canvas.DrawPath(path, paint)
             | None -> ()
+
+    member this.Run(_: Vide<_,_>) : Vide<_,_> =
+        fun _ ctx ->
+            (this :> IDirectDrawable).End(ctx)
             (), State.none
 
 type polygon =
@@ -270,6 +316,8 @@ type polygon =
 
 type Vide.VideBaseBuilder with member inline _.Yield(b: Polygon) = b {()}
 
+type DrawEntry with
+    member inline _.polygon(f: System.Action<SKPath>) = Polygon().geo(fun path -> f.Invoke(path))
 
 type bg(color: Color) =
     inherit DrawableBuilder()
@@ -287,3 +335,6 @@ type bg(color: Color) =
     static member inline color(color) = bg(color)
 
 type Vide.VideBaseBuilder with member inline _.Yield(b: bg) = b {()}
+
+type DrawEntry with
+    member inline _.bg(color) = bg(color)

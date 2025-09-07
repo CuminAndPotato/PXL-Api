@@ -184,6 +184,10 @@ type Image(createFrames: unit -> list<Frame>) =
     member val _repeat = false with get, set
     member inline this.repeat(repeat) = this._repeat <- repeat; this
 
+    interface IDirectDrawable with
+        member this.End(ctx: RenderCtx) =
+            this.Run((fun _ _ -> ()))
+
     member this.Run(_: Vide<_,_>) : Vide<_,_> =
         scene {
             let! ctx = getCtx ()

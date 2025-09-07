@@ -3,6 +3,7 @@ namespace Pxl
 open System
 open System.Threading
 open Pxl
+open Pxl.Ui
 
 type Reality
     (
@@ -25,12 +26,11 @@ module Reality =
         Reality(onCycleFinished, getNow)
 
 // TODO: ggf. eine HandleErrorStrategy aus onError machen
-module Evaluation =
-    let mutable startedTimes = 0
+type Evaluation() =
+    static let mutable startedTimes = 0
+    static let mutable accumulatedConsumerCount = 0
 
-    let hangDetectionTimeSpan = TimeSpan.FromSeconds(5.0)
-
-    let start
+    static member Start
         (
             canvas: Canvas,
             renderCtx: RenderCtx,
@@ -39,11 +39,14 @@ module Evaluation =
             readButtons: unit -> Buttons,
             scene: Vide<unit,'s>
         ) =
+        let hangDetectionTimeSpan = TimeSpan.FromSeconds(5.0)
+
         let mutable shouldEvaluate = true
         let isRunning () = shouldEvaluate && not canvas.Ct.IsCancellationRequested
 
         let mutable lastEvaluationTime : DateTimeOffset option = None
 
+        startedTimes <- startedTimes + 1
         fun () ->
             let frameArrays =
                 [
@@ -92,6 +95,7 @@ module Evaluation =
                     printfn $"Error in evaluation: {ex.Message}"
                     onEvalError ex
         |> Thread.startBackground $"Evaluation_{startedTimes}"
+        |> ignore
 
         fun () ->
             while isRunning () do
@@ -102,5 +106,49 @@ module Evaluation =
                 | None -> ()
                 Thread.Sleep(100)
         |> Thread.startBackground $"EvaluationHangDetection_{startedTimes}"
+        |> ignore
 
         fun () -> shouldEvaluate <- false
+
+    static member Start
+        (
+            canvas: Canvas,
+            renderCtx: RenderCtx,
+            onEvalError: Exception -> unit,
+            reality: Reality,
+            readButtons: unit -> Buttons,
+            startScene: unit -> unit
+        ) =
+
+        accumulatedConsumerCount <- accumulatedConsumerCount + 1
+
+        let consumerThread =
+            fun () ->
+                try
+                    startScene ()
+                with ex ->
+                    printfn $"Error in consuming frames: {ex}"
+            |> Thread.startBackground $"ConsumerThread_{accumulatedConsumerCount}"
+
+        let threadBasedCtx =
+            CSharpSceneHandling.initializeEvaluation renderCtx Thread.CurrentThread consumerThread
+
+        let videScene =
+            scene {
+                do
+                    try
+                        threadBasedCtx.TriggerFrameProcessing()
+                    with ex ->
+                        printfn $"Error in triggering frame processing: {ex}"
+                        (threadBasedCtx :> IDisposable).Dispose()
+                        reraise ()
+            }
+
+        Evaluation.Start(
+            canvas,
+            renderCtx,
+            onEvalError,
+            reality,
+            readButtons,
+            videScene
+        )

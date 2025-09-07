@@ -180,6 +180,8 @@ type BoundedBlockingQueue<'a>(maxSize: int, producerOnEnd) =
 module Thread =
     let startBackground name (threadProc: unit -> unit) =
         let t = new Thread(threadProc)
-        t.IsBackground <- true
-        t.Name <- name
-        t.Start()
+        do
+            t.IsBackground <- true
+            t.Name <- name
+            t.Start()
+        t
