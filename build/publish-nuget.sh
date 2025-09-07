@@ -1,7 +1,8 @@
 rm -rf ./.nupkg
 
 projects=(
-  "./dotnet/fsharp/Pxl.Ui/Pxl.Ui.fsproj"
+  "./dotnet/Pxl.Ui/Pxl.Ui.fsproj"
+  "./dotnet/Pxl.Ui.CSharp/Pxl.Ui.CSharp.fsproj"
   "./dotnet/Pxl/Pxl.fsproj"
 )
 

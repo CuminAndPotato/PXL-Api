@@ -13,6 +13,6 @@ TsGen.generate
 
 
 // TsGen.generate
-//     [ Path.Combine(scriptDir, "../../../dotnet/fsharp/", "skiasharp.3.119.0/lib/net8.0/SkiaSharp.dll") ]
+//     [ Path.Combine(scriptDir, "../../../dotnet/", "skiasharp.3.119.0/lib/net8.0/SkiaSharp.dll") ]
 //     (Path.Combine(scriptDir, "src/types.d.ts"))
 //     (Some "SkiaSharp")

@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Pxl.Ui</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../../packageAssets/LICENSE.md" Pack="true" PackagePath="/" />
+        <None Include="../../packageAssets/README.md" Pack="true" PackagePath="/" />
+        <None Include="../../packageAssets/logo.png" Pack="true" PackagePath="/" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../Pxl.Ui/Pxl.Ui.fsproj" />
+    </ItemGroup>
+
+</Project>

@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Pxl.Ui", "fsharp\Pxl.Ui\Pxl.Ui.fsproj", "{424FB6DE-7227-43CA-952C-9C5FD3B241FB}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Pxl.Ui", "Pxl.Ui\Pxl.Ui.fsproj", "{424FB6DE-7227-43CA-952C-9C5FD3B241FB}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pxl", "Pxl\Pxl.fsproj", "{E0919BAA-0A25-45D8-BF70-EB53F8521FA1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "csharp", "csharp", "{CD079406-46E6-4419-AE8E-293180AF6C07}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pxl.Ui.CSharp", "csharp\Pxl.Ui.CSharp\Pxl.Ui.CSharp.csproj", "{C0059A0A-5F36-4B3B-ADDF-6237E85A26AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pxl.Ui.CSharp", "Pxl.Ui.CSharp\Pxl.Ui.CSharp.csproj", "{1E1EC7C5-7FB7-44D1-854A-C7A5A1E3B5D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,15 +23,12 @@ Global
 		{E0919BAA-0A25-45D8-BF70-EB53F8521FA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0919BAA-0A25-45D8-BF70-EB53F8521FA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0919BAA-0A25-45D8-BF70-EB53F8521FA1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C0059A0A-5F36-4B3B-ADDF-6237E85A26AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C0059A0A-5F36-4B3B-ADDF-6237E85A26AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C0059A0A-5F36-4B3B-ADDF-6237E85A26AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C0059A0A-5F36-4B3B-ADDF-6237E85A26AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E1EC7C5-7FB7-44D1-854A-C7A5A1E3B5D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E1EC7C5-7FB7-44D1-854A-C7A5A1E3B5D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E1EC7C5-7FB7-44D1-854A-C7A5A1E3B5D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E1EC7C5-7FB7-44D1-854A-C7A5A1E3B5D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C0059A0A-5F36-4B3B-ADDF-6237E85A26AA} = {CD079406-46E6-4419-AE8E-293180AF6C07}
 	EndGlobalSection
 EndGlobal
