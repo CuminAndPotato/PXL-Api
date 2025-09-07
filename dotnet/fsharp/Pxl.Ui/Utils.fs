@@ -148,6 +148,7 @@ type BoundedBlockingQueue<'a>(maxSize: int, producerOnEnd) =
         lock this <| fun () ->
             if isConsumerRegistered then
                 failwith "Only one consumer at a time"
+            isConsumerRegistered <- true
 
         Thread(fun () ->
             try
