@@ -86,6 +86,10 @@ module internal CSharpSceneHandling =
         context.ConsumeFrames()
 
 
+module CSharpEvaluation =
+    ()
+
+
 
 namespace Pxl.Ui
 

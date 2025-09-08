@@ -110,7 +110,7 @@ module Simulator =
                     let canvas = createCanvas onCanvasEnd
                     // printfn $"Canvas created - Metadata: {canvas.Metadata}"
                     let stop =
-                        Evaluation.Start(
+                        Evaluation.startVide(
                             canvas,
                             RenderCtx(canvas.Metadata.width, canvas.Metadata.height, canvas.Metadata.fps),
                             (fun ex ->

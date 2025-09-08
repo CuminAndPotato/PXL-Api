@@ -22,7 +22,7 @@
         <Compile Include="Canvas.fs" />
         <Compile Include="RenderCtx.fs" />
         <Compile Include="Vide.fs" />
-        <Compile Include="Scene.fs" />
+        <Compile Include="CSharp.fs" />
         <Compile Include="Debug.fs" />
         <Compile Include="Ui/Utils.fs" />
         <Compile Include="Ui/Domain.fs" />

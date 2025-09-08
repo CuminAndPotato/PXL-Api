@@ -1,0 +1,8 @@
+{
+  "script": {
+    "enableScriptNuGetReferences": true,
+    "defaultTargetFramework": "net8.0"
+  },
+  "MsBuild": { "UseLegacySdkResolver": false },
+  "sdk": { "version": "8.0.100", "rollForward": "latestFeature" }
+}

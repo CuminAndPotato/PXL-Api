@@ -26,11 +26,11 @@ module Reality =
         Reality(onCycleFinished, getNow)
 
 // TODO: ggf. eine HandleErrorStrategy aus onError machen
-type Evaluation() =
-    static let mutable startedTimes = 0
-    static let mutable accumulatedConsumerCount = 0
+module Evaluation =
+    let mutable startedTimes = 0
+    let mutable accumulatedConsumerCount = 0
 
-    static member Start
+    let startVide
         (
             canvas: Canvas,
             renderCtx: RenderCtx,
@@ -110,7 +110,7 @@ type Evaluation() =
 
         fun () -> shouldEvaluate <- false
 
-    static member Start
+    let startCSharp
         (
             canvas: Canvas,
             renderCtx: RenderCtx,
@@ -144,7 +144,7 @@ type Evaluation() =
                         reraise ()
             }
 
-        Evaluation.Start(
+        startVide(
             canvas,
             renderCtx,
             onEvalError,
